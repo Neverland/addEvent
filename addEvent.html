@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	function addEvent(elem, evType, fn, capture) {
+		if (!elem) return;
+		var
+				f,
+				indicator = arguments.callee;
+		that = this,
+				call = function () {
+					typeof(fn) === 'function' && fn.apply(elem, arguments);
+				};
+		indicator.fn || (indicator.fn = function () {
+			var self = arguments.callee , fn , that = this;
+			fn = self.prototype;
+			fn.constructor = self;
+			fn.factory = function (a, b, c, d) {
+				a._eIndex = that.id();
+				console.log(a._eIndex);
+				return [
+					this.a = a || {},
+					this.b = b,
+					this.c = typeof (call) === 'function' ? call : function () {
+					},
+					this.d = d || false
+				];
+			};
+			fn.id = function () {
+				self.index || ( self.index = 0);
+				return '_' + (self.index++);
+			};
+			fn.fire = elem.addEventListener ? (function (a, b, c, d) {
+				a.addEventListener(b, c, d || false);
+			}) : (
+					elem.attachEvent ?
+							(function (a, b, c, d) {
+								a.attachEvent('on' + b, c);
+							})
+							:
+							(function (a, b, c, d) {
+								a['on' + b] = c;
+							})
+					)
+		});
+		f = (indicator._FN_ || (indicator._FN_ = new indicator.fn()));
+		f.fire.apply(null, new f.factory(elem, evType, fn, capture));
+		return that;
+	}
+	function addEvent(elem, evType, fn, capture) {
+		if (!elem) return;
+		var
+				f,
+				indicator = arguments.callee;
+		that = this,
+				call = function () {
+					typeof(fn) === 'function' && fn.apply(elem, arguments);
+				};
+		indicator.factory || (indicator.factory = function (a, b, c, d) {
+			return [
+				this.a = a || {},
+				this.b = b,
+				this.c = typeof (call) === 'function' ? call : function () {
+				},
+				this.d = d || false
+			];
+		});
+		(indicator._FN_ || (indicator._FN_ = elem.addEventListener ? (function (a, b, c, d) {
+			a.addEventListener(b, c, d || false);
+		}) : (
+				elem.attachEvent ?
+						(function (a, b, c, d) {
+							a.attachEvent('on' + b, c);
+						})
+						:
+						(function (a, b, c, d) {
+							a['on' + b] = c;
+						})
+				))).apply(null, new indicator.factory(elem, evType, fn, capture));
+		return that;
+	}
+</script>
+</body>
+</html>
